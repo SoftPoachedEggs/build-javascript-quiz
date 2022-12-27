@@ -1,0 +1,83 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./style.css">
+    <title>Javascript Quiz!</title>
+</head>
+<!-- Highscore and time remaining to display in header. -->
+<body>
+    <header>
+        <a id=highscore-link>View Highscores</a> 
+        <div>Time Remaining: <span id="timer"></span></div>
+    </header>
+
+<!--body must include: 
+        -Begin Prompt
+            -Start Button
+        -Question Page
+            -Multiple Choice Buttons
+            -Answer status display
+        -final score display
+            -text box for initials
+            -submit score button
+        -high score display
+            -Clear score button
+            -Start Over button
+-->
+
+
+    <main>
+    <!-- Begin Prompt-->
+        <div id=beginSection>
+            <h2 id=title>Coding Quiz Challenge</h2>
+            <p>Answer as many javascript questions as possible within the time limit. <br>Incorrect answers will decreasetime by five seconds. <br>Good Luck!</p>
+            <button id=startButton class="button">Start!</button>
+        </div>
+
+    <!-- Question Display-->
+        <div hidden id=questionDisplay>
+
+            <h2 id=questionDisplayText></h2>
+
+            <div id=answerButtons>
+                <button id=optionButton0 class="optionButton"></button>
+                <button id=optionButton1 class="optionButton"></button>
+                <button id=optionButton2 class="optionButton"></button>
+                <button id=optionButton3 class="optionButton"></button>
+            </div>
+
+            <div id=answerResults>
+                <p id=answerResultsText></p>
+            </div>
+
+        </div>
+    
+    <!--final score display -->
+        <div hidden id=finalScoreSection>
+            <h2>Great Job!</h2>
+            <p>Your final score is <span id=score></span></p>
+            <form class="inline-form" id="submission-form">
+                  <label for="initials">Enter initials: </label>
+                  <input type="text" id="initials">
+                  <button id="submit-button" class="button">Submit</button>
+            </form>
+        </div>
+
+    <!-- high score display-->
+        <div hidden id=highScoreDisplaySection>
+            <h2>Highscores:</h2>
+            <ol id="highscoreList"></ol>
+            <div class="highScoreButton">
+                <button id="backButton" class="button">Back</button>
+                <button id="clearHighscore" class="button">Clear Highscores</button>
+            </div>
+        </div>
+
+    </main>
+    
+    <script src="./script.js"></script>
+</body>
+
+</html>

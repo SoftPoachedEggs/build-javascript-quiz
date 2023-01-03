@@ -49,7 +49,7 @@
             </div>
 
             <div id=answerResults>
-                <p id=answerResultsText></p>
+                <p id=answerResults-text></p>
             </div>
 
         </div>
@@ -69,10 +69,13 @@
         <div hidden id=highScoreDisplaySection>
             <h2>Highscores:</h2>
             <ol id="highscoreList"></ol>
-            <div class="highScoreButton">
-                <button id="backButton" class="button">Back</button>
-                <button id="clearHighscore" class="button">Clear Highscores</button>
-            </div>
+            <form>
+                <label for="initials">Please enter your initials:</label><br>
+                <input type="text" id="initialBox" name="enterInitials"><br>
+                <input type="submit" value ="Submit"><br><br>
+            <form>
+            <button id="backButton" class="button">Back</button><br>
+            <button id="clearHighscore" class="button">Clear Highscores</button><br>
         </div>
 
     </main>

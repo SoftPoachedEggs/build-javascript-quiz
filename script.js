@@ -24,18 +24,19 @@ let timer;
 let timerInterval;
 let activeQuestion;
 
-
-const startButton = document.querySelector('#startButton');
+const clearHighScore = document.querySelector("#clearHighScore");
 const timeDisplay = document.querySelector('#timer');
 const question = document.querySelector('#questionDisplayText');
-const choices = Array.from(document.querySelectorAll('#optionButton'));
+const startButton = document.querySelector('#startButton');
+const backButton = document.querySelector("#backButton");
+const submitButton = document.querySelector("#submitButton");
 
 const beginSection = document.querySelector("#beginSection");
 const questionDisplay = document.querySelector("#questionDisplay");
+const questionResult = document.querySelector("#answerResults-text")
 const finalScoreSection = document.querySelector("#finalScoreSection");
 const highScoreDisplaySection = document.querySelector("#highScoreDisplaySection");
-
-
+const highScoreList = document.querySelector("#highscoreList");
 
 
 //Hide inactive sections
@@ -48,18 +49,16 @@ const hideSections = () => {
 }
 
 
-//on click clear display, populate first question and initialize timer.
-startButton.addEventListener("click", startQuiz);
 
 
 //timer countdown
 function countdown() {
     timer--;
     displayTimer();
-    if (timer < 1) {
-      endQuiz();
-    }
-  }
+   if (timer <= 0) {
+    endQuiz();
+    }}
+
 
 //display timer
 function displayTimer() {
@@ -71,105 +70,171 @@ function displayTimer() {
 const quizQuestionBank = [
     { 
         question: "Commonly used data types DO NOT include:",
-        choice1: "strings", 
-        choice2: "booleans", 
-        choice3: "alerts",
-        choice4: "numbers",
-        answer:  "alerts",
+        choices: [
+                "strings",
+                "booleans", 
+                "alerts",
+                "numbers",
+                ],
+        answer: "alerts",
     },
     { 
-        question: "Commonly used data types DO NOT include:",
-        choice1: "numbers and strings",
-        choice2: "other arrays",
-        choice3: "booleans",
-        choice4: "all of the above",
+        question: "blah, blah, black, another quesiton:",
+        choices:[ 
+                "numbers and strings",
+                "other arrays",
+                "booleans",
+                "all of the above",
+                ],
         answer:  "all of the above",
     },
     {
         question: "String values must be enclosed within _____ when being assigned to variables.",
-        choice1: "commas", 
-        choice2: "curly brackets",
-        choice3: "quotes",
-        choice4: "parentheses",
+        choices:[ 
+                "commas", 
+                "curly brackets",
+                "quotes",
+                "parentheses"
+                ],
         answer: "quotes", 
     },
      {
         question: "A very useful tool used during development and debugging for printing content to the debugger is:",
-        choice1: "JavaScript", 
-        choice2: "terminal/bash",
-        choice3: "for loops",
-        choice4: "console.log",
+        choices:[ "JavaScript", 
+                "terminal/bash",
+                "for loops",
+                "console.log"
+                ],
         answer: "console.log", 
     },
     {
         question: "Which of the following is a statement that can be used to terminate a loop, switch or label statement?",
-        choice1: "break", 
-        choice2: "stop",
-        choice3: "halt",
-        choice4: "exit",
+        choices:[
+                "break", 
+                "stop",
+                "halt",
+                "exit",
+                ],
         answer: "break", 
     },
 ]
 
 
-
-
-const maxQuestions = 4
-
-function startQuiz(){
+let startQuiz = () => {
     hideSections();
     activeQuestion = 0
+    timer = 50;
 
     //initialize timer and start countdown
    
-    timer = quizQuestionBank.length * 10;
     timerInterval = setInterval(countdown, 1000);
     questionDisplay.removeAttribute('hidden');
 
-    questionAppear();
+    quizDisplay();
+    displayTimer();
+
+}
+
+
+//on click clear display, populate first question and initialize timer.
+startButton.addEventListener("click", startQuiz);
+
+let quizDisplay = () => {
+    const questionPrompt = quizQuestionBank[activeQuestion];
+    const answerOptions = questionPrompt.choices;
+    
+
+    questionDisplayText.textContent = questionPrompt.question;
+
+
+    for (i = 0; i < quizQuestionBank.length; i++){
+        let answerOptionDisplay = answerOptions[i]
+        let answerOptionButton = document.querySelector("#optionButton" + i);
+        answerOptionButton.textContent = answerOptionDisplay;
+    }
+}
+// set click listener to answer buttons and activate checkanswer function
+document.querySelector("#answerButtons").addEventListener("click", checkAnswer);
+
+//Compare the text content of the option button with the answer to the current question
+function optionIsCorrect(answerOptionButton) {
+  return answerOptionButton.textContent === quizQuestionBank[activeQuestion].answer;
+}
+
+//if answer is incorrect, penalise time
+function checkAnswer(eventObject) {
+  let optionButton = eventObject.target;
+  if (optionIsCorrect(optionButton)) {
+    questionResult.textContent = "Correct!";
+    console.log("correct");
+  } else {
+    questionResult.textContent = "Incorrect!";
+    console.log("incorrect");
+    decrementTimer();
+    }
+
+  activeQuestion++;
+  
+  if (activeQuestion < quizQuestionBank.length) {
+    quizDisplay();
+  } else {
+    endQuiz();
+  }
+}
+
+//timer penalty for incorrect answer
+  const decrementTimer = () => {
+    let timePenalty = 5
+    timer = timer - timePenalty;
     displayTimer();
 }
 
 
 
-
-const questionAppear = () => {
-    let question = quizQuestionBank[activeQuestion];
-    let answerResults = document.querySelector('answerResultsText')
-
-    let questionDisplayText  = document.querySelector('#questionDisplayText');
-    questionDisplayText.textContent = question.question;
-
-    optionButton0.innerHTML = question.choice1
-    optionButton1.innerHTML = question.choice2
-    optionButton2.innerHTML = question.choice3
-    optionButton3.innerHTML = question.choice4
+//timer stop function
+const stopTimer = () => {
+    clearInterval(timerInterval);
 }
-optionButton0.addEventListener('click', evaluateGuess());
-optionButton1.addEventListener('click', evaluateGuess());
-optionButton2.addEventListener('click', evaluateGuess());
-optionButton3.addEventListener('click', evaluateGuess());
 
-const evaluateGuess = () => {
-
-    if (optionButton0.innerHTML === quizQuestionBank[activeQuestion].answer){
-        return answerResults.textContent = "Correct!"
-        activeQuestion++;
-        console.log("correct");
-    } else {
-        return answerResults.textContent = "Incorrect.";
-        activeQuestion++;
-    }
+const endQuiz = () => {
+    stopTimer();
+    hideSections();
+    highScoreDisplaySection.removeAttribute('hidden');
 
 }
 
-  /*
-    //increment current question by 1
-    currentQuestion++;
-    //if we have not run out of questions then display next question, else end quiz
-    if (currentQuestion < quizQuestionBank.length) {
-      displayQuestion();
-    } else {
-      endQuiz();
-    }
-*/
+//high score page buttons
+
+//backButton.addEventListener("click", returnToMain);
+//clearHighScore.addEventListener("click", clearScore);
+//submitButton.addEventListener("click", submitScore);
+
+
+//const updateStoredLeaderboard = (leaderboardItem) => 
+//{
+//    let leaderboardArray = getLeaderboard();
+ //   //append new leaderboard item to leaderboard array
+ //   leaderboardArray.push(leaderboardItem);
+//    localStorage.setItem("leaderboardArray", JSON.stringify(leaderboardArray));
+//}
+
+
+/*
+//return to main page function
+const returnToMain = () => {
+
+}
+
+//Clear score function
+const clearScore = () => {
+
+}
+
+//submit score function
+const submitScore = () => {
+
+}
+
+//high score display function
+
+const */

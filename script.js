@@ -3,11 +3,17 @@
 
 -Begin Prompt
     -Start Button
+    -Instructions display
     -when start button clicked hide start section and display question section
+    -needs highscore nav link to visit previous scores
 -Question display
-    -display qustion 
-    -Multiple Choice Buttons
-    -Answer status display
+    -display qustion
+        -questions are stored in array with key values pairs. 
+        -use nested array to store choices.
+        -one question at a time.
+        -use loop to iterate through questions
+        -Multiple Choice Buttons
+        -previous answer results displayed after choice is clicked. 
     -once timer runs out or question list completed hide question section and display final score section
 -final score display
     -text box for initials
@@ -24,35 +30,39 @@ let timer;
 let timerInterval;
 let activeQuestion;
 
-const clearHighScore = document.querySelector("#clearHighScore");
 const timeDisplay = document.querySelector('#timer');
 const question = document.querySelector('#questionDisplayText');
 const startButton = document.querySelector('#startButton');
-const backButton = document.querySelector("#backButton");
 const submitButton = document.querySelector("#submitButton");
+const backToStart = document.querySelector("#backButton")
+const clearButton = document.querySelector("#clearScores");
+const answerButtons = document.querySelector("#answerButtons")
+
+const scoreDisplay = document.querySelector("#score");
+const textInput = document.querySelector("#initialBox")
+
 
 const beginSection = document.querySelector("#beginSection");
 const questionDisplay = document.querySelector("#questionDisplay");
 const questionResult = document.querySelector("#answerResults-text")
-const finalScoreSection = document.querySelector("#finalScoreSection");
+const finalScoreDisplay = document.querySelector("#submitHighScoreSection");
 const highScoreDisplaySection = document.querySelector("#highScoreDisplaySection");
-const highScoreList = document.querySelector("#highscoreList");
+const highScoreLink = document.querySelector("#highScoreLink");
+const leaderboardLink = document.querySelector("#highScoreLink");
 
+let hsList = document.querySelector("#highScoreList");
 
 //Hide inactive sections
 const hideSections = () => {
     beginSection.setAttribute('hidden', true);
     questionDisplay.setAttribute('hidden', true);
-    finalScoreSection.setAttribute('hidden', true);
+    finalScoreDisplay.setAttribute('hidden', true);
     highScoreDisplaySection.setAttribute('hidden', true);
     // change to correct item. display when first question is answered resultDiv.style.display = "none"
 }
 
-
-
-
 //timer countdown
-function countdown() {
+const countdown = () => {
     timer--;
     displayTimer();
    if (timer <= 0) {
@@ -69,56 +79,58 @@ function displayTimer() {
 
 const quizQuestionBank = [
     { 
-        question: "Commonly used data types DO NOT include:",
+        question: "What is the correct way to write a JavaScript for loop?",
         choices: [
-                "strings",
-                "booleans", 
-                "alerts",
-                "numbers",
+                "for (i = 0; i < 5; i++)",
+                "for i = 1 to 5", 
+                "for (i <= 5; i++)",
+                "for (i = 0; i <= 5; i++)",
                 ],
-        answer: "alerts",
+        answer: "for (i = 0; i < 5; i++)",
     },
     { 
-        question: "blah, blah, black, another quesiton:",
+        question: "What is the correct way to write a JavaScript function?",
         choices:[ 
-                "numbers and strings",
-                "other arrays",
-                "booleans",
+                `function myFunction()`,
+                `function = myFunction()`,
+                `function: myFunction()`,
                 "all of the above",
                 ],
-        answer:  "all of the above",
+        answer:  `function myFunction()`,
     },
     {
-        question: "String values must be enclosed within _____ when being assigned to variables.",
+        question: "How do you add a single line comment in JavaScript?",
         choices:[ 
-                "commas", 
-                "curly brackets",
-                "quotes",
-                "parentheses"
+                "// This is a comment", 
+                "# This is a comment",
+                "/* This is a comment */",
+                "-- This is a comment"
                 ],
-        answer: "quotes", 
+        answer: "// This is a comment", 
     },
      {
-        question: "A very useful tool used during development and debugging for printing content to the debugger is:",
-        choices:[ "JavaScript", 
-                "terminal/bash",
-                "for loops",
-                "console.log"
+        question: "What is the correct way to declare a variable in JavaScript?",
+        choices:[ 
+                `variable x;`, 
+                `var x;`,
+                `x = 5;`,
+                `const x;`
                 ],
         answer: "console.log", 
     },
     {
-        question: "Which of the following is a statement that can be used to terminate a loop, switch or label statement?",
+        question: "How do you create an array in JavaScript?",
         choices:[
-                "break", 
-                "stop",
-                "halt",
-                "exit",
+                `array(1, 2, 3)`, 
+                `[1, 2, 3]`,
+                `{1, 2, 3}`,
+                `array: [1, 2, 3]`,
                 ],
         answer: "break", 
     },
 ]
 
+//on click clear display, populate first question and initialize timer.
 
 let startQuiz = () => {
     hideSections();
@@ -126,26 +138,20 @@ let startQuiz = () => {
     timer = 50;
 
     //initialize timer and start countdown
-   
     timerInterval = setInterval(countdown, 1000);
     questionDisplay.removeAttribute('hidden');
+    questionResult.textContent = "";
 
     quizDisplay();
     displayTimer();
-
 }
-
-
-//on click clear display, populate first question and initialize timer.
 startButton.addEventListener("click", startQuiz);
 
 let quizDisplay = () => {
     const questionPrompt = quizQuestionBank[activeQuestion];
     const answerOptions = questionPrompt.choices;
-    
 
     questionDisplayText.textContent = questionPrompt.question;
-
 
     for (i = 0; i < quizQuestionBank.length; i++){
         let answerOptionDisplay = answerOptions[i]
@@ -153,16 +159,14 @@ let quizDisplay = () => {
         answerOptionButton.textContent = answerOptionDisplay;
     }
 }
-// set click listener to answer buttons and activate checkanswer function
-document.querySelector("#answerButtons").addEventListener("click", checkAnswer);
 
 //Compare the text content of the option button with the answer to the current question
-function optionIsCorrect(answerOptionButton) {
+const optionIsCorrect = (answerOptionButton) => {
   return answerOptionButton.textContent === quizQuestionBank[activeQuestion].answer;
 }
 
-//if answer is incorrect, penalise time
-function checkAnswer(eventObject) {
+//check if choice is truthy. If so, display correct. If not, decrement timer and display next question.
+answerButtons.addEventListener("click", checkAnswer);function checkAnswer(eventObject) {
   let optionButton = eventObject.target;
   if (optionIsCorrect(optionButton)) {
     questionResult.textContent = "Correct!";
@@ -173,9 +177,9 @@ function checkAnswer(eventObject) {
     decrementTimer();
     }
 
+//increment active question if questions remain. Otherwise, call endquiz function to end quiz.
   activeQuestion++;
-  
-  if (activeQuestion < quizQuestionBank.length) {
+    if (activeQuestion < quizQuestionBank.length) {
     quizDisplay();
   } else {
     endQuiz();
@@ -189,52 +193,113 @@ function checkAnswer(eventObject) {
     displayTimer();
 }
 
-
-
 //timer stop function
 const stopTimer = () => {
     clearInterval(timerInterval);
 }
 
+//end quiz function
 const endQuiz = () => {
-    stopTimer();
     hideSections();
-    highScoreDisplaySection.removeAttribute('hidden');
+    stopTimer();
 
+    scoreDisplay.textContent = timer;
+    finalScoreDisplay.removeAttribute('hidden');
 }
 
-//high score page buttons
-
-//backButton.addEventListener("click", returnToMain);
-//clearHighScore.addEventListener("click", clearScore);
-//submitButton.addEventListener("click", submitScore);
 
 
-//const updateStoredLeaderboard = (leaderboardItem) => 
-//{
-//    let leaderboardArray = getLeaderboard();
- //   //append new leaderboard item to leaderboard array
- //   leaderboardArray.push(leaderboardItem);
-//    localStorage.setItem("leaderboardArray", JSON.stringify(leaderboardArray));
-//}
 
+//-------------highscore section-----------------
+//function to save score as array key pair. 
+const storeScore = (event) => {
+  if (!textInput.value) {
+    alert("Please enter your initials!");
+    return;
+  }
+  event.preventDefault();
 
-/*
-//return to main page function
-const returnToMain = () => {
+  let savedHighScore = {
+    initials: textInput.value,
+    score: timer,
+  };
+  saveToHighScoreList(savedHighScore);
 
+  buildHighScoreList();
+  hideSections();
+
+  highScoreDisplaySection.removeAttribute("hidden");
+}
+submitButton.addEventListener("click", storeScore);
+
+//updates the leaderboard stored in local storage
+function saveToHighScoreList(savedHighScore) {
+  let highScoreList = getHighScores();
+  //append new leaderboard item to leaderboard array
+  highScoreList.push(savedHighScore);
+  localStorage.setItem("highScoreList", JSON.stringify(highScoreList));
 }
 
-//Clear score function
-const clearScore = () => {
-
+//parse fron json and ret
+const getHighScores = () => {
+  let savedHighScores = localStorage.getItem("highScoreList");
+  if (savedHighScores !== null) {
+    let highScoreList = JSON.parse(savedHighScores);
+    return highScoreList;
+  } else {
+    highScoreList = [];
+  }
+  return highScoreList;
 }
 
-//submit score function
-const submitScore = () => {
-
+//display highscore list 
+const buildHighScoreList = () => {
+  let sortedHighScores = sortHighScores();
+  hsList.innerHTML = "";
+  for (let i = 0; i < sortedHighScores.length; i++) {
+    let highScoreEntry = sortedHighScores[i];
+    let newListItem = document.createElement("li");
+    newListItem.textContent = highScoreEntry.initials + "  " + highScoreEntry.score;
+    hsList.append(newListItem);
+  }
+}
+const sortHighScores = () => {
+  let highScoreArray = getHighScores();
+  if (!highScoreArray) {
+    return;
+  }
+  highScoreArray.sort(function (a, b) {
+    return b.score - a.score;
+  });
+  return highScoreArray;
 }
 
-//high score display function
+//clear score function
+const clearHighScores = () => {
+  localStorage.clear();
+  buildHighScoreList();
+  console.log('clicked')
+}
+clearHighScore.addEventListener("click", clearHighScores);
 
-const */
+//button function to bring back to start. 
+const backToBeginning = () => {
+    hideSections();
+    beginSection.removeAttribute('hidden');
+    timer = undefined;
+    displayTimer();
+    console.log("back2beginning clicked");
+}
+backToStart.addEventListener("click", backToBeginning);
+
+//nav link to highscores
+const navtoHighScores = () => {
+    hideSections();
+    highScoreDisplaySection.removeAttribute("hidden");
+    timer = undefined;
+    
+    displayTimer();
+    buildHighScoreList();
+  }
+  leaderboardLink.addEventListener("click", navtoHighScores)
+  

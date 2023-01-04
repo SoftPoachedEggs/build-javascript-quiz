@@ -1,106 +1,124 @@
-#quiz-container {
-    width: 800px;
-    margin: 0 auto;
-    text-align: center;
-    font-family: Arial, sans-serif;
-  }
-  
-  #quiz-header {
-    background-color: #333;
-    color: #fff;
-    padding: 20px;
-  }
-  
-  #quiz-header h1 {
-    margin: 0;
-    font-size: 28px;
-  }
-  
-  #quiz-header #timer {
-    font-size: 18px;
-  }
-  
-  #quiz-body {
-    background-color: #ddd;
-    padding: 20px;
-  }
-  
-  #quiz-body .question {
-    font-size: 22px;
-    margin: 10px 0;
-  }
-  
-  #quiz-body label {
-    display: block;
-    font-size: 18px;
-    margin: 10px 0;
-  }
-  
-  #quiz-footer {
-    background-color: #333;
-    color: #fff;
-    padding: 20px;
-  }
-  
-  #quiz-footer button {
-    background-color: #fff;
-    border: 0;
-    color: #333;
-    cursor: pointer;
-    font-size: 18px;
-    padding: 10px 20px;
-  }
-  
-  #quiz-footer button:hover {
-    background-color: #ccc;
-  }
-  
-  #results-container {
-    width: 800px;
-    margin: 0 auto;
-    text-align: center;
-    font-family: Arial, sans-serif;
-  }
-  
-  #results-container h1 {
-    margin: 0;
-    font-size: 28px;
-  }
-  
-  #results-container #final-score {
-    font-size: 22px;
-    margin: 10px 0;
-  }
-  
-  #results-container #high-score-form {
-    margin: 20px 0;
-  }
-  
-  #results-container #high-score-form label {
-    display: block;
-    font-size: 18px;
-    margin: 10px 0;
-  }
-  
-  #results-container #high-score-form input {
-    font-size: 18px;
-    padding: 10px;
-  }
-  
-  #results-container #high-score-form button {
-    background-color: #fff;
-    border: 0;
-    color: #333;
-    cursor: pointer;
-    font-size: 18px;
-    padding: 10px 20px;
-  }
-  
-  #results-container #high-score-form button:hover {
-    background-color: #ccc;
-  }
-  
-  #results-container #high-scores {
-    margin: 20px 0;
-    font-size: 18px;
-  }
+html {
+  font-family: Arial, sans-serif;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: lightgray;
+  padding: 20px;
+}
+
+#highScoreLink {
+  color: blue;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+#timer {
+  font-weight: bold;
+}
+
+main {
+  max-width: 800px;
+  margin: 0 auto;
+  background-color: white;
+  padding: 20px;
+}
+
+#beginSection {
+  text-align: center;
+}
+
+#title {
+  font-size: 2em;
+  margin: 20px 0;
+}
+
+button.button {
+  background-color: blue;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 1em;
+  cursor: pointer;
+}
+
+#questionDisplay {
+  text-align: center;
+}
+
+#questionDisplayText {
+  font-size: 1.5em;
+  margin: 20px 0;
+}
+
+#answerButtons {
+  display: flex;
+  justify-content: space-around;
+}
+
+button.optionButton {
+  background-color: lightgray;
+  color: black;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 1em;
+  cursor: pointer;
+}
+button.submitButton {
+  padding-top: 8px;
+}
+#answerResults {
+  margin: 20px 0;
+}
+
+#answerResults-text {
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+#submitHighScoreSection {
+  text-align: center;
+}
+
+#initialBox {
+  border: 1px solid gray;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+#highScoreDisplaySection {
+  text-align: center;
+}
+
+#highScoreList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+#highScoreList li {
+  margin: 10px 0;
+  font-size: 1.5em;
+}
+
+.nav-buttons {
+  display: flex;
+  padding: 10px;
+  justify-content: center;
+  align-content: center;
+  margin: 0 10px;
+}
+
+#clearHighScore {
+  margin: 20px;
+
+}
+
+#backButton {
+  margin: 20px;
+}

@@ -9,7 +9,7 @@
 <!-- Highscore and time remaining to display in header. -->
 <body>
     <header>
-        <a id=highscore-link>View Highscores</a> 
+        <a id=highScoreLink>View Highscores</a> 
         <div>Time Remaining: <span id="timer"></span></div>
     </header>
 
@@ -55,27 +55,22 @@
         </div>
     
     <!--final score display -->
-        <div hidden id=finalScoreSection>
+        <div hidden id=submitHighScoreSection>
             <h2>Great Job!</h2>
             <p>Your final score is <span id=score></span></p>
-            <form class="inline-form" id="submission-form">
-                  <label for="initials">Enter initials: </label>
-                  <input type="text" id="initials">
-                  <button id="submit-button" class="button">Submit</button>
-            </form>
+            <label for="initials">Please enter your initials:</label><br>
+            <input type="initialsText" id="initialBox"><br><br>
+            <button id="submitButton" class="button">Submit</button><br><br>
         </div>
 
     <!-- high score display-->
         <div hidden id=highScoreDisplaySection>
             <h2>Highscores:</h2>
-            <ol id="highscoreList"></ol>
-            <form>
-                <label for="initials">Please enter your initials:</label><br>
-                <input type="text" id="initialBox" name="enterInitials"><br>
-                <input type="submit" value ="Submit"><br><br>
-            <form>
-            <button id="backButton" class="button">Back</button><br>
-            <button id="clearHighscore" class="button">Clear Highscores</button><br>
+            <ol id="highScoreList"></ol>
+            <div class = "nav-buttons">
+                <button id="clearHighScore" class="button">Clear</button><br>
+                <button id="backButton" class="button">Back</button><br>
+            </div>
         </div>
 
     </main>

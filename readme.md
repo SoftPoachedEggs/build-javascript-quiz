@@ -9,7 +9,7 @@ No installation necessary.
 
 ## Visual
 
-![Website Image](./assets/Screen%20Recording%202022-12-05%20at%206.53.41%20PM.gif)
+![Website Image](./assets/screen%capture/Screen%Recording%2023-01-04%at%12.46.04%PM.gif)
 
 
 ## Usage
